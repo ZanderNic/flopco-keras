@@ -1,4 +1,3 @@
-
 def numel(w : list):
     out = 1
     for k in w:
@@ -31,7 +30,6 @@ def compute_conv2d_flops(layer, macs = False):
 #     flops = h * w * output_channels * input_channels * w_h * w_w / (stride**2)
     flops = h * w * output_channels * input_channels * w_h * w_w
 
-    
     if not macs:
         flops_bias = numel(layer.output.shape[1:]) if layer.use_bias is not None else 0
         flops = 2 * flops + flops_bias
@@ -58,9 +56,8 @@ def compute_bn2d_flops(layer, macs = False):
     
     return int(flops)
 
-
 def compute_relu_flops(layer, macs = False):
-    
+
     flops = 0
     if not macs:
         flops = numel(layer.input.shape[1:])
@@ -89,10 +86,10 @@ def compute_globalavgpool2d_flops(layer, macs = False):
 
     if layer.data_format == "channels_first":
         _, input_channels, h, w = layer.input.shape
-        _, output_channels = layer.output_shape
+        _, output_channels = layer.output.shape
     elif layer.data_format == "channels_last":
         _, h, w, input_channels = layer.input.shape
-        _, output_channels = layer.output_shape
+        _, output_channels = layer.output.shape
 
     return h*w
 
